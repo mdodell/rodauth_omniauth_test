@@ -83,14 +83,13 @@ class RodauthMain < Rodauth::Rails::Auth
     end
 
     # Provider ignores state is required to prevent CRSF errors
-    omniauth_provider :linkedin, Rails.application.credentials.linkedin[:client_id], Rails.application.credentials.linkedin[:client_secret], name: :linkedin, scope: 'r_liteprofile',
-                                                                                                                                             provider_ignores_state: true
+    omniauth_provider :linkedin, Rails.application.credentials.linkedin[:LINKEDIN_KEY], Rails.application.credentials.linkedin[:LINKEDIN_SECRET], name: :linkedin, scope: 'r_emailaddress r_liteprofile',
+                                                                                                                                                  provider_ignores_state: true
 
-    omniauth_setup do
-      p omniauth_strategy.options['client_id']
-
-      p omniauth_strategy.options['client_secret']
+    after_omniauth_create_account do
+      p omniauth_info
     end
+
     # ==> Flash
     # Override default flash messages.
     # create_account_notice_flash "Your account has been created. Please verify your account by visiting the confirmation link sent to your email address."
